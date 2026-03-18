@@ -1,0 +1,65 @@
+{% extends 'movies/base.html' %}
+
+{% block title %}CineMatch – Discover Movies by Genre{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-badge">
+            <div class="badge-dot"></div>
+            Personalized Recommendations
+        </div>
+        <h1 class="hero-title">
+            What are you in the<br>
+            <span>mood for tonight?</span>
+        </h1>
+        <p class="hero-sub">
+            Choose your favourite genre and discover handpicked films curated just for you.
+        </p>
+        <div class="hero-stats">
+            <div>
+                <div class="stat-num">{{ genres|length }}</div>
+                <div class="stat-lbl">Genres</div>
+            </div>
+            <div>
+                <div class="stat-num">80+</div>
+                <div class="stat-lbl">Movies</div>
+            </div>
+            <div>
+                <div class="stat-num">∞</div>
+                <div class="stat-lbl">Good Times</div>
+            </div>
+        </div>
+    </div>
+    <div class="scroll-hint">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
+        </svg>
+        <span>Choose a Genre</span>
+    </div>
+</section>
+
+<!-- Genres -->
+<section class="genres-sec">
+    <div class="sec-label">Browse by Genre</div>
+    <h2 class="sec-title">Select Your Mood</h2>
+    <div class="genre-grid">
+        {% for genre in genres %}
+        <a href="{% url 'recommendations' genre.slug %}" class="genre-card" id="genre-{{ genre.slug }}"
+            style="background: linear-gradient(135deg, {{ genre.color_start }}, {{ genre.color_end }});">
+            <div class="g-ico">{{ genre.icon }}</div>
+            <div class="g-info">
+                <span class="g-name">{{ genre.name }}</span>
+                <div class="g-count">{{ genre.movies.count }} films</div>
+            </div>
+            <div class="g-arrow">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

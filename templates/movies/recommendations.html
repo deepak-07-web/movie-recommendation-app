@@ -1,0 +1,79 @@
+{% extends 'movies/base.html' %}
+
+{% block title %}{{ genre.name }} Movies – CineMatch{% endblock %}
+{% block meta_desc %}Discover the best {{ genre.name }} movies. Handpicked recommendations by CineMatch.{% endblock %}
+
+{% block content %}
+<div class="page-wrap">
+
+    <!-- Genre Banner -->
+    <div class="g-banner"
+        style="background: linear-gradient(135deg, {{ genre.color_start }}e0, {{ genre.color_end }}e0);">
+        <div class="g-banner-inner">
+            <div class="banner-ico">{{ genre.icon }}</div>
+            <div>
+                <a href="{% url 'home' %}" class="btn-back">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                    All Genres
+                </a>
+                <h1 class="banner-name">{{ genre.name }}</h1>
+                <p class="banner-desc">{{ genre.description }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Movies Grid -->
+    <div class="movies-sec">
+        <div class="movies-hdr">
+            <h2 class="movies-hdr-title">🍿 Recommended Films</h2>
+            <span class="movies-count">{{ movies.count }} movies</span>
+        </div>
+
+        <div class="movies-grid">
+            {% for movie in movies %}
+            <div class="movie-card" id="movie-{{ movie.id }}">
+                <div class="m-poster"
+                    style="background: linear-gradient(135deg, {{ movie.poster_color_start }}, {{ movie.poster_color_end }});">
+                    <div class="m-poster-ico">{{ genre.icon }}</div>
+                    <div class="m-poster-title">{{ movie.title }}</div>
+                    <div class="m-yr-badge">{{ movie.year }}</div>
+                    <div class="m-rate-badge">⭐ {{ movie.rating }}</div>
+                </div>
+                <div class="m-info">
+                    <div class="m-title">{{ movie.title }}</div>
+                    <div class="m-meta">
+                        <span>🕐 {{ movie.duration_formatted }}</span>
+                        <span>📅 {{ movie.year }}</span>
+                    </div>
+                    <div class="m-dir">🎬 {{ movie.director }}</div>
+                    <p class="m-desc">{{ movie.description }}</p>
+                    <div class="m-cast">🎭 {{ movie.cast }}</div>
+                </div>
+            </div>
+            {% empty %}
+            <div style="grid-column:1/-1;text-align:center;padding:80px;color:var(--t3);">
+                <div style="font-size:64px;margin-bottom:16px;">🎬</div>
+                <p style="font-size:18px;">No movies yet for this genre.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Other Genre Pills -->
+    <div class="pills-sec">
+        <div class="pills-lbl">Browse Other Genres</div>
+        <div class="pills">
+            {% for g in genres %}
+            <a href="{% url 'recommendations' g.slug %}" class="pill {% if g.slug == genre.slug %}active{% endif %}"
+                id="pill-{{ g.slug }}">
+                {{ g.icon }} {{ g.name }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}
